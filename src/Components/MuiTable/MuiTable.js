@@ -8,6 +8,11 @@ import { ExportToCsv } from 'export-to-csv'; //or use your library of choice her
 //import { data } from './makeData';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchtabledata } from '../../Redux/Slice/gettableData';
+
+
+
 
 
 
@@ -54,17 +59,24 @@ const columns = [
       size: 120,
     },
     {
-      accessorKey: 'category_id.name',
+     // accessorKey: 'formula_ingredients_list[0].formula_id.name',
+     accessorFn: (row) => `${row.formula_ingredients_list?.map(f => f.formula_id.name)} `,
       header: 'Formula Name',
       size: 300,
     },
     {
-      accessorKey: 'city',
-      header: 'City',
+      accessorFn: (row) => `${row.formula_ingredients_list?.map(f => f.raw_mat_id.name)} `,
+      header: 'Rawmaterial Name',
     },
     {
-      accessorKey: 'country',
-      header: 'Country',
+      accessorFn: (row) => `${row.formula_ingredients_list?.map(f => f.no_of_unit)} `,
+      header: 'NumberofUnit',
+      size: 220,
+    },
+
+    {
+      accessorFn: (row) => `${row.formula_ingredients_list?.map(f => f.percentage)} `,
+      header: 'Percentage',
       size: 220,
     },
   ];
@@ -88,6 +100,7 @@ const MuiTable = () => {
 
 //get data 
   const [data, setData] = useState([]);
+ 
 const getDetails = async () => {
   const res = await fetch("https://nafisa.selopian.us/product_formula", {
       method: "GET",
@@ -98,6 +111,7 @@ const getDetails = async () => {
   const data = await res.json()
   console.log(data.data);
   setData(data.data)
+  
   // if (res.status === 200) {
   //     console.log(data);
   //   //  setData(data.data)
@@ -108,7 +122,13 @@ useEffect(() => {
   getDetails();
 }, []);
 
+const keys = useSelector(state=> state.data?.keys)
+    console.log('dd',keys);
 
+    const dispatch = useDispatch()
+    useEffect(()=>{
+      (dispatch(fetchtabledata()))
+    },[dispatch])
 
 
 
