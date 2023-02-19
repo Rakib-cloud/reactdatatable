@@ -41,3 +41,14 @@
     transform: rotate(360deg);
   }
 }
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  
+  .print-container, .print-container * {
+    visibility: visible;
+  }
+  
+}
