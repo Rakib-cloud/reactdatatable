@@ -100,7 +100,7 @@ const MuiTable = () => {
 
 //get data 
   const [data, setData] = useState([]);
- 
+
 const getDetails = async () => {
   const res = await fetch("https://nafisa.selopian.us/product_formula", {
       method: "GET",
@@ -111,7 +111,7 @@ const getDetails = async () => {
   const data = await res.json()
   console.log(data.data);
   setData(data.data)
-  
+
   // if (res.status === 200) {
   //     console.log(data);
   //   //  setData(data.data)
@@ -122,8 +122,9 @@ useEffect(() => {
   getDetails();
 }, []);
 
-const keys = useSelector(state=> state.data?.keys)
-    console.log('dd',keys);
+const data1 = useSelector(state=> state.data?.keys.data)
+    console.log('dd',data1);
+
 
     const dispatch = useDispatch()
     useEffect(()=>{
